@@ -3,6 +3,15 @@ const express = require('express')
 const app = express()
 const port = 3000
 
+const cors = require("cors");
+require("dotenv").config();
+// Rendo disponibile chiamata a server tramite cors
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+  })
+);
+
 app.use(express.static("public"));
 app.use(express.json());
 //importo il routers
