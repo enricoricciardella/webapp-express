@@ -9,10 +9,9 @@ function Index(req, res) {
             return next(new Error(err.message));
         }
 
-        return res.status(200).json({
-            status: "success",
-            data: movies,
-        });
+        return res.status(200).json(
+            movies
+        );
     });
 };
 
