@@ -14,7 +14,6 @@ function Index(req, res) {
         );
     });
 };
-
 //ENDPOINT SHOW
 function show(req, res) {
     const urlSlug = req.params.slug;
@@ -33,10 +32,8 @@ function show(req, res) {
         if (err) {
             return next(new Error(err.message));
         }
-        return res.status(200).json({
-            status: "success",
-            data: movies,
-        });
+        const obj = movies[0];
+        return res.status(200).json(obj);
     });
 };
 
