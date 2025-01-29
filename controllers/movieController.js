@@ -37,8 +37,16 @@ function show(req, res) {
     });
 };
 
+const indexReview = async (req, res, next) => {
+        //prendo id movie dal parametro url
+        const movieSlug = req.params.movieSlug;
+        const sql = `SELECT reviews.* FROM reviews JOIN movies ON reviews.movie_id = movies.id WHERE movies.slug = ?;`
+        connection.query(sql, [movieSlug], (err, reviews) => {
+            if (err) {
+                return next(new Error(err.message));
+            }
+            return res.status(200).json(reviews);
+        });
+}
 
-
-
-
-module.exports = { Index, show };
+module.exports = { Index, show, indexReview };
