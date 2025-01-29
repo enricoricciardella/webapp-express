@@ -49,4 +49,49 @@ const indexReview = async (req, res, next) => {
         });
 }
 
-module.exports = { Index, show, indexReview };
+const reviewStore = async (req, res) => {
+    const movieSlug = req.params.movieSlug;
+    const {name, vote, text} = req.body;
+    // Validazione voto
+  if (isNaN(vote)  || vote < 0 || vote > 5) {
+    return res.status(400).json({
+      status: "fail",
+      message: "Il voto deve essere valore numerico compreso tra 0 e 5",
+    });
+  }
+  // Validazione nome
+  if (name.length <= 3) {
+    return res.status(400).json({
+      status: "fail",
+      message: "Il nome deve essere piu lungo di 3 caratteri",
+    });
+  }
+  // Validazione testo
+  if (text && text.length > 0 && text.length < 5) {
+    return res.status(400).json({
+      status: "fail",
+      message: "Il testo deve essere lungo almeno 6 caratteri",
+    });
+  }
+  const sql_Book =` 
+        SELECT id
+        FROM movies
+        WHERE slug = ?
+      `;
+      connection.query(sql_Book, [movieSlug], (err, result) => {
+        if (err) {
+            return next(new Error(err.message));
+        }
+        const movieId = result[0].id;
+        const sqlReview = `INSERT INTO reviews(movie_id, name, vote, text)
+        VALUES (?, ?, ?, ?);`
+        connection.query(sql, [movieId], (err, reviews) => {
+            if (err) {
+                return next(new Error(err.message));
+            }
+            return res.status(200).json(reviews);
+        });
+        
+    });
+}
+module.exports = { Index, show, indexReview, reviewStore };

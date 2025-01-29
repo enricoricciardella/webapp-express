@@ -9,7 +9,7 @@ router.get("/:slug", controller.show);
 //esportiamo il router
 
 //endpoint salva review di un film
-// router.post("/moviveSlug/reviews", controller.reviewStore);
+router.post("/:movieSlug/reviews", controller.reviewStore);
 
 //endpoint mostro tutte le reviews
 router.get("/:movieSlug/reviews", controller.indexReview);
